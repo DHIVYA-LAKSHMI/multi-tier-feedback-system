@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CloudZen Feedback Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 12px;
+            padding: 30px 40px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 25px;
+        }
+
+        header img {
+            width: 120px;
+            margin-bottom: 15px;
+        }
+
+        header h1 {
+            font-weight: 700;
+            color: #4a148c;
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: 2px solid #764ba2;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 8px #667eea;
+        }
+
+        button {
+            margin-top: 20px;
+            background-color: #764ba2;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background-color: #4a148c;
+        }
+
+        .result {
+            margin-top: 30px;
+            background-color: #f3e5f5;
+            border-radius: 10px;
+            padding: 20px;
+            color: #4a148c;
+            box-shadow: inset 0 0 10px #d1c4e9;
+            text-align: left;
+        }
+
+        .result h2 {
+            margin-top: 0;
+        }
+
+        /* Sentiment colors */
+        .sentiment-positive {
+            color: green;
+            font-weight: 700;
+        }
+        .sentiment-negative {
+            color: red;
+            font-weight: 700;
+        }
+        .sentiment-neutral {
+            color: gray;
+            font-weight: 700;
+        }
+        .sentiment-mixed {
+            color: orange;
+            font-weight: 700;
+        }
+
+        /* Colored score values */
+        .score-positive {
+            color: green;
+            font-weight: 600;
+        }
+        .score-negative {
+            color: red;
+            font-weight: 600;
+        }
+        .score-neutral {
+            color: gray;
+            font-weight: 600;
+        }
+        .score-mixed {
+            color: orange;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 25px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            textarea {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CloudZen Feedback Hub</h1>
+        </header>
+
+        <form method="POST" action="/submit-feedback">
+            <textarea name="feedback" placeholder="Share your thoughts, ideas, or concerns..." required>{{ request.form.feedback if request.method == 'POST' else '' }}</textarea>
+            <br />
+            <button type="submit">Analyze Feedback</button>
+        </form>
+
+        {% if sentiment %}
+        <div class="result" role="region" aria-live="polite" aria-atomic="true">
+            <h2>
+                Sentiment Detected: 
+                <strong class="
+                    {% if sentiment == 'POSITIVE' %}sentiment-positive{% endif %}
+                    {% if sentiment == 'NEGATIVE' %}sentiment-negative{% endif %}
+                    {% if sentiment == 'NEUTRAL' %}sentiment-neutral{% endif %}
+                    {% if sentiment == 'MIXED' %}sentiment-mixed{% endif %}
+                ">
+                    {{ sentiment }}
+                </strong>
+            </h2>
+            <p><strong>Scores:</strong><br />
+                Positive: <span class="score-positive">{{ scores['Positive'] }}</span><br />
+                Negative: <span class="score-negative">{{ scores['Negative'] }}</span><br />
+                Neutral: <span class="score-neutral">{{ scores['Neutral'] }}</span><br />
+                Mixed: <span class="score-mixed">{{ scores['Mixed'] }}</span>
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
