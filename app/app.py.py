@@ -6,18 +6,18 @@ app = Flask(__name__)
 
 # DB1 (Raw Feedback)
 DB1_CONFIG = {
-    'host': 'feedback-db1.c924oswai08q.us-east-2.rds.amazonaws.com',
+    'host': 'db1 endpoint',
     'user': 'admin',
-    'password': 'admin123#',
-    'database': 'feedback_raw'
+    'password': 'your credentials',
+    'database': 'your credentials'
 }
 
 # DB2 (Analyzed Feedback)
 DB2_CONFIG = {
-    'host': 'feedback-db2.c924oswai08q.us-east-2.rds.amazonaws.com',
+    'host': 'db2 endpoint 2',
     'user': 'admin',
-    'password': 'admin123#',
-    'database': 'feedback_analysis'
+    'password': 'your credentials',
+    'database': 'your credentials'
 }
 
 # Initialize Amazon Comprehend client
